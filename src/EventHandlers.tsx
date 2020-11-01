@@ -33,9 +33,9 @@ export function toggleAdditionalSanatoryControlsExisting(value: boolean, sender)
     let controlsArray = [layout.sanatoryName, layout.fullPrice, layout.summerPrice,
         layout.notSummerPrice, layout.dateTimePicker1, layout.dateTimePicker2, layout.summerDaysQuantity,
         layout.notSummerDaysQuantity, layout.workersQuantity, layout.childrenQuantity, layout.spouseQuantity,]
-    controlsArray.forEach((i) => {
+    controlsArray.map((i) => {
         i.params.required = value;
-    })
+    });
     let additionalBlock = layout.additionalData;
     additionalBlock.params.visibility = value;
 }
