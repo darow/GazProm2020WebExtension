@@ -15,11 +15,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@docsvision/webclient": "~5.14.1",
-    "@docsvision/webclient-extension-build": "^5.13.0",
+    "@docsvision/webclient": "^5.14.4",
+    "@docsvision/webclient-extension-build": "^5.15.2",
     "concurrently": "^4.1.1",
     "gulp": "^4.0.2",
-    "rollup": "^1.16.2",
-    "typescript": "^3.5.2"
+    "rollup": "^1.32.1",
+    "typescript": "^3.9.7"
   }
 }
