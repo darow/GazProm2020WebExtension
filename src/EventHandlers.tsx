@@ -8,15 +8,43 @@ import {UrlResolver} from "@docsvision/webclient/System/UrlResolver";
 import {$RequestManager, IRequestManager} from "@docsvision/webclient/System/$RequestManager";
 import {MessageBox} from "@docsvision/webclient/Helpers/MessageBox/MessageBox";
 
-export async function fillCandAgreementInfoStr(sender) {
+export async function fillCandAgreementInfo(sender) {
     let controls = sender.layout.controls
-    let cardIdControl = controls.links.params.links[0].data.linkId
+    console.log("controls.links1")
+    console.log(controls.links1)
+    console.log("controls.links1.params")
+    console.log(controls.links1.params)
+    console.log("controls.links1.params.links")
+    console.log(controls.links1.params.links)
+    console.log("controls.links1.params.links[1]")
+    console.log(controls.links1.params.links[1])
+    console.log("controls.links1.params.links[1].data")
+    console.log(controls.links1.params.links[1].data)
+    console.log("controls.links1.params.links[1].data.cardId")
+    console.log(controls.links1.params.links[1].data.cardId)
 
+    let cardId = controls.links1.params.links[1].data.cardId
+    let infoText = controls.infoLabel.params.text
+    let infLabel = controls.infoLabel
+
+    if (cardId != null) {
+        let urlResolver = sender.layout.getService($UrlResolver);
+        let requestManager = sender.layout.getService($RequestManager);
+        await getCandAgreementInfo(urlResolver, requestManager, cardId)
+            .then((data: string) => {
+                let permTemp = (data['permanentlyTemporary'] == 0)?"Постоянно":"Временно"
+                infLabel.params.text = `
+               Вам на рассмотрение поступил "Отчет о кандидатах" на должность <${data['plannedPosition']}> в подразделение
+                <${data['staffDep']}> (руководитель <${data['staffDepManager']}>)!
+                  Характер работы: <${permTemp}>. 
+               `
+            })
+    }
 }
 
-export async function getCandAgreementInfoStr(urlResolver: UrlResolver, requestManager: IRequestManager, cardId: string) {
-    let url = urlResolver.resolveApiUrl("GetStaffDepManById", "RowDesignerService");
-    url += "?id=" + cardId;
+export async function getCandAgreementInfo(urlResolver: UrlResolver, requestManager: IRequestManager, agreementCardId: string) {
+    let url = urlResolver.resolveApiUrl("GetAgreementListInfo", "RowDesignerService");
+    url += "?id=" + agreementCardId;
     return requestManager.get(url);
 }
 
@@ -41,15 +69,15 @@ export async function getStaffDepManager(urlResolver: UrlResolver, requestManage
 }
 
 export async function fillAgreementAndBookKeepers(sender) {
-    console.log('start')
+    // console.log('start')
     let folderControl = sender.layout.controls.folder
-    console.log(folderControl)
-    let folderP = folderControl.params
-    console.log(folderP)
-    let folderVal = folderControl.params.value
-    console.log(folderVal)
+    // console.log(folderControl)
+    // let folderP = folderControl.params
+    // console.log(folderP)
+    // let folderVal = folderControl.params.value
+    // console.log(folderVal)
     let folderID = folderControl.params.value.id
-    console.log(folderID)
+    // console.log(folderID)
 
     let controls = sender.layout.controls
     let headerText = controls.headerLabel.props.text;
@@ -137,12 +165,11 @@ export async function logPostRequest(sender) {
         })
 }
 
-
 export async function postRequest(urlResolver: UrlResolver, requestManager: IRequestManager) {
     let url = urlResolver.resolveApiUrl("ChangeState", "RowDesignerService");
     let postdata = {
-        idList: ["df4d5173-a3f6-483c-bdcf-c14a1c1fb068", "2020eb64e772-10d5-4c30-be66-94ed6d4a3b8a"],
-        stateName: "Drafting"
+        idList: ["df4d5173-a3f6-483c-bdcf-c14a1c1fb068", "cba42eca-bf18-4702-93b8-29390937020a", "b6da23af-d66b-485b-a04a-9a096d975e0e"],
+        stateName: "AddedToOrder"
         // "AddedToOrder" "Drafting"
     }
     return requestManager.post(url, JSON.stringify(postdata));
