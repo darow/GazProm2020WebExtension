@@ -10,19 +10,6 @@ import {MessageBox} from "@docsvision/webclient/Helpers/MessageBox/MessageBox";
 
 export async function fillCandAgreementInfo(sender) {
     let controls = sender.layout.controls
-    console.log("controls.links1")
-    console.log(controls.links1)
-    console.log("controls.links1.params")
-    console.log(controls.links1.params)
-    console.log("controls.links1.params.links")
-    console.log(controls.links1.params.links)
-    console.log("controls.links1.params.links[1]")
-    console.log(controls.links1.params.links[1])
-    console.log("controls.links1.params.links[1].data")
-    console.log(controls.links1.params.links[1].data)
-    console.log("controls.links1.params.links[1].data.cardId")
-    console.log(controls.links1.params.links[1].data.cardId)
-
     let cardId = controls.links1.params.links[1].data.cardId
     let infoText = controls.infoLabel.params.text
     let infLabel = controls.infoLabel
